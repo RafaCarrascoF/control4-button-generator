@@ -1,0 +1,575 @@
+/* Paleta de color, tipografías y variables base (estilo navy + dorado). */
+:root {
+  --navy:       #080f1e;
+  --navy-mid:   #0d1a30;
+  --navy-light: #162240;
+  --navy-card:  #111b2e;
+  --gold:       #c9a355;
+  --gold-light: #e0c07a;
+  --gold-dim:   #8a6e35;
+  --cream:      #f4ede0;
+  --text-muted: #8a9bb5;
+  --border:     rgba(201, 163, 85, 0.18);
+  --border-soft: rgba(201, 163, 85, 0.10);
+  --ok:         #b9d2a0;
+  --error:      #cf6b66;
+  --grad-gold:  linear-gradient(135deg, #c9a355, #e0c07a, #a87f3a);
+  --ff-d:       "Cormorant Garamond", Georgia, serif;
+  --ff-b:       "Raleway", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease:       cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Fondo general y tipografía base de la página. */
+body {
+  margin: 0;
+  font-family: var(--ff-b);
+  font-weight: 300;
+  background:
+    radial-gradient(1100px 520px at 82% -8%, rgba(201, 163, 85, 0.10), transparent 60%),
+    linear-gradient(180deg, var(--navy-mid), var(--navy));
+  background-attachment: fixed;
+  color: var(--cream);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+::-webkit-scrollbar { width: 11px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 10px; }
+
+.page {
+  width: min(1080px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 64px 0 28px;
+}
+
+/* Cabecera: etiqueta superior, título y descripción. */
+.hero {
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--ff-b);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 22px;
+}
+
+.eyebrow::after {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.7;
+}
+
+.eyebrow-logo {
+  display: block;
+  border-radius: 4px;
+}
+
+.hero h1 {
+  margin: 0 0 16px;
+  font-family: var(--ff-d);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: 0.005em;
+  color: var(--cream);
+}
+
+.hero-sub {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.46em;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: var(--gold);
+}
+
+.hero p {
+  margin: 0;
+  max-width: 680px;
+  color: var(--text-muted);
+  font-size: 1.02rem;
+  font-weight: 300;
+}
+
+/* Guía de uso desplegable. */
+.guide {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  margin-bottom: 22px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
+}
+
+.guide > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 20px 26px;
+  font-family: var(--ff-d);
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.guide > summary::-webkit-details-marker {
+  display: none;
+}
+
+.guide > summary::before {
+  content: "?";
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  font-family: var(--ff-b);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--navy);
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.guide > summary::after {
+  content: "+";
+  margin-left: auto;
+  color: var(--gold);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.guide[open] > summary::after {
+  content: "−";
+}
+
+.guide[open] > summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.guide-body {
+  padding: 18px 26px 26px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.guide-body p {
+  margin: 0 0 14px;
+}
+
+.guide-body strong {
+  color: var(--cream);
+  font-weight: 500;
+}
+
+.guide-body em {
+  color: var(--gold-light);
+  font-style: italic;
+}
+
+.guide-body code {
+  background: var(--navy);
+  border: 1px solid var(--border-soft);
+  padding: 1px 6px;
+  font-size: 0.85em;
+}
+
+.guide-body ol,
+.guide-body ul {
+  margin: 0 0 14px;
+  padding-left: 1.25rem;
+}
+
+.guide-body li {
+  margin: 7px 0;
+}
+
+.guide-note {
+  font-style: italic;
+  color: var(--gold-dim);
+  margin-bottom: 0 !important;
+}
+
+/* Tarjetas/secciones principales. */
+.panel {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  padding: 34px;
+  margin-bottom: 22px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
+}
+
+.panel h2 {
+  margin: 0;
+  font-family: var(--ff-d);
+  font-weight: 300;
+  font-size: 1.9rem;
+  letter-spacing: 0.01em;
+  color: var(--cream);
+}
+
+.section-title,
+.button-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.section-title h2 {
+  margin: 0;
+}
+
+.hint {
+  margin: 6px 0 22px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+/* Selector de modo de imagen (una imagen / dos imágenes) por botón. */
+.mode-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+  margin-top: 20px;
+}
+
+.mode-toggle label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--cream);
+}
+
+.mode-toggle small {
+  color: var(--text-muted);
+}
+
+.mode-toggle input {
+  accent-color: var(--gold);
+  width: 16px;
+  height: 16px;
+}
+
+/* Dos zonas de imagen (OFF y ON) lado a lado. */
+.dual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.dual-grid .dropzone.small {
+  margin-top: 0;
+}
+
+/* Zonas de arrastrar y soltar archivos. */
+.dropzone {
+  border: 1px dashed var(--border);
+  padding: 40px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.012);
+  cursor: pointer;
+  transition: border-color 0.35s var(--ease), background 0.35s var(--ease);
+}
+
+.dropzone:hover {
+  border-color: var(--gold);
+  background: rgba(201, 163, 85, 0.05);
+}
+
+.dropzone.small {
+  padding: 28px;
+  margin-top: 18px;
+}
+
+.dropzone.dragover {
+  border-color: var(--gold);
+  background: rgba(201, 163, 85, 0.08);
+}
+
+.dropzone strong,
+.dropzone span {
+  display: block;
+}
+
+.dropzone strong {
+  font-family: var(--ff-b);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.dropzone span {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.status {
+  margin: 16px 0 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+
+.muted { color: var(--text-muted); }
+.ok    { color: var(--gold-light); }
+.error { color: var(--error); }
+
+/* Botones: principal (dorado), secundario (contorno) y de borrado. */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 0;
+  padding: 0.85rem 2rem;
+  font-family: var(--ff-b);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--grad-gold);
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.35s var(--ease);
+}
+
+button:hover:not(:disabled) {
+  box-shadow: 0 0 32px rgba(201, 163, 85, 0.38);
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+}
+
+button.secondary:hover:not(:disabled) {
+  background: rgba(201, 163, 85, 0.08);
+  box-shadow: none;
+}
+
+button.danger {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 0.55rem 1.1rem;
+  letter-spacing: 0.12em;
+}
+
+button.danger:hover:not(:disabled) {
+  color: var(--error);
+  border-color: var(--error);
+  box-shadow: none;
+  transform: none;
+}
+
+/* Tarjeta de un botón: campos de texto y datos calculados. */
+.button-card {
+  border: 1px solid var(--border-soft);
+  padding: 26px;
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.014);
+}
+
+.button-card h3 {
+  margin: 0;
+  font-family: var(--ff-d);
+  font-weight: 400;
+  font-size: 1.35rem;
+  letter-spacing: 0.03em;
+  color: var(--cream);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 4px;
+}
+
+label span {
+  display: block;
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+  color: var(--gold-dim);
+}
+
+input[type="text"] {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  padding: 11px 2px;
+  font-family: var(--ff-b);
+  font-size: 1rem;
+  font-weight: 300;
+  background: transparent;
+  color: var(--cream);
+  transition: border-color 0.35s var(--ease);
+}
+
+input[type="text"]::placeholder {
+  color: rgba(138, 155, 181, 0.5);
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-bottom-color: var(--gold);
+}
+
+.computed {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 22px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-soft);
+  background: rgba(8, 15, 30, 0.5);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.computed b {
+  color: var(--gold-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+}
+
+/* Previsualizaciones de los iconos OFF y ON. */
+.preview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.preview > div {
+  text-align: center;
+  color: var(--gold-dim);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.preview-box {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  background:
+    repeating-conic-gradient(rgba(255, 255, 255, 0.025) 0% 25%, transparent 0% 50%)
+    50% / 22px 22px,
+    var(--navy);
+  border: 1px solid var(--border-soft);
+  margin-bottom: 12px;
+}
+
+canvas {
+  max-width: 160px;
+  max-height: 160px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.actions #generateButton {
+  min-width: 220px;
+}
+
+/* Pie de página: autoría y enlace al repositorio. */
+.site-footer {
+  width: min(1080px, calc(100% - 40px));
+  margin: 14px auto 52px;
+  padding-top: 26px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+}
+
+.site-footer a {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  transition: color 0.3s;
+}
+
+.site-footer a:hover {
+  color: var(--gold-light);
+}
+
+.site-footer .made-by strong {
+  color: var(--cream);
+  font-weight: 500;
+}
+
+/* Ajustes para pantallas estrechas (móvil): todo a una columna. */
+@media (max-width: 760px) {
+  .page { padding-top: 40px; }
+
+  .panel { padding: 24px; }
+
+  .grid,
+  .computed,
+  .preview,
+  .dual-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title,
+  .button-card-header,
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .actions #generateButton {
+    width: 100%;
+  }
+}
