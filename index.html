@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="author" content="Rafa Carrasco" />
+  <meta name="description" content="Genera drivers .c4z personalizados de scenario experience buttons para Control4 a partir de un driver base y una imagen PNG." />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <title>Generador de Control4 - Scenario experience button</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="vendor/jszip.min.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <span class="eyebrow"><img class="eyebrow-logo" src="favicon.svg" alt="" width="18" height="18" /> Herramienta de drivers</span>
+      <h1>Generador de Control4<span class="hero-sub">Scenario experience button</span></h1>
+      <p>
+        Genera drivers .c4z personalizados a partir del driver base y una imagen PNG.
+        Default/OFF se crea en blanco y negro; Selected/ON se mantiene en color.
+      </p>
+    </header>
+
+    <details class="guide">
+      <summary>Guía de uso</summary>
+      <div class="guide-body">
+        <p>
+          Genera drivers <code>.c4z</code> de <em>scenario experience buttons</em> para Control4
+          a partir de imágenes. Todo ocurre en tu navegador: no se sube nada a ningún servidor.
+        </p>
+        <ol>
+          <li>Rellena <strong>Nombre del driver</strong> y <strong>Creador</strong> en cada botón.</li>
+          <li>
+            Elige el <strong>modo de imagen</strong>:
+            <ul>
+              <li><strong>Una imagen</strong>: subes una imagen en color. El ON queda en color y el OFF se genera en blanco y negro automáticamente.</li>
+              <li><strong>Dos imágenes</strong>: subes una imagen para el OFF (p. ej. puerta cerrada) y otra para el ON (p. ej. puerta abierta), ambas en color.</li>
+            </ul>
+          </li>
+          <li>Usa <strong>+ Añadir botón</strong> si quieres generar varios a la vez.</li>
+          <li>Pulsa <strong>Generar</strong>. Con un botón se descarga un <code>.c4z</code>; con varios, un <code>.zip</code> con todos.</li>
+        </ol>
+        <p class="guide-note">
+          Recomendado un PNG cuadrado en color. El ID del driver y el creador para el XML se calculan solos a partir de lo que escribas.
+        </p>
+      </div>
+    </details>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Botones</h2>
+        <button id="addButton" class="secondary" type="button">+ Añadir botón</button>
+      </div>
+      <div id="buttons"></div>
+    </section>
+
+    <section class="panel actions">
+      <button id="generateButton" type="button" disabled>Generar</button>
+      <p id="log" class="status muted">Añade al menos un botón con nombre, creador e imagen.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span class="made-by">Hecho por <strong>Rafa Carrasco</strong></span>
+    <a href="https://github.com/RafaCarrascoF/control4-button-generator" target="_blank" rel="noopener">Ver en GitHub ↗</a>
+  </footer>
+
+  <template id="buttonTemplate">
+    <article class="button-card">
+      <div class="button-card-header">
+        <h3>Botón</h3>
+        <button class="remove secondary danger" type="button">Eliminar</button>
+      </div>
+
+      <div class="grid">
+        <label>
+          <span>Nombre del driver</span>
+          <input class="driverName" type="text" placeholder="Ej. Luces Jardín" />
+        </label>
+
+        <label>
+          <span>Creador</span>
+          <input class="creator" type="text" placeholder="Ej. Rafa Carrasco" />
+        </label>
+      </div>
+
+      <div class="mode-toggle">
+        <label><input type="radio" class="modeOption" value="single" checked /> <span>Una imagen <small>(OFF en B/N automático)</small></span></label>
+        <label><input type="radio" class="modeOption" value="dual" /> <span>Dos imágenes <small>(OFF y ON distintas)</small></span></label>
+      </div>
+
+      <div class="singleImage">
+        <div class="imageDrop dropzone small">
+          <input class="imageInput" type="file" accept="image/*" hidden />
+          <strong>Arrastra aquí la imagen en color</strong>
+          <span>PNG recomendado · el OFF se genera en B/N</span>
+        </div>
+      </div>
+
+      <div class="dualImage" hidden>
+        <div class="dual-grid">
+          <div class="offDrop dropzone small">
+            <input class="offInput" type="file" accept="image/*" hidden />
+            <strong>Imagen OFF</strong>
+            <span>Estado apagado (p. ej. puerta cerrada)</span>
+          </div>
+          <div class="onDrop dropzone small">
+            <input class="onInput" type="file" accept="image/*" hidden />
+            <strong>Imagen ON</strong>
+            <span>Estado encendido (p. ej. puerta abierta)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="computed">
+        <div><b>ID driver:</b> <span class="driverId">-</span></div>
+        <div><b>Creador XML:</b> <span class="creatorXml">-</span></div>
+      </div>
+
+      <div class="preview">
+        <div>
+          <div class="preview-box"><canvas class="previewDefault" width="160" height="160"></canvas></div>
+          <span>Default / OFF</span>
+        </div>
+        <div>
+          <div class="preview-box"><canvas class="previewSelected" width="160" height="160"></canvas></div>
+          <span>Selected / ON</span>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
