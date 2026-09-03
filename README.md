@@ -50,4 +50,19 @@ no requiere conexión).
 
 ## Licencia
 
-[MIT](LICENSE) © Rafa Carrasco. Úsalo libremente; se agradece mantener el crédito.
+Este repositorio contiene dos cosas con licencias distintas, y conviene no confundirlas.
+
+**La herramienta** —el HTML, el CSS y el JavaScript que generan los iconos y reempaquetan
+el driver— es [MIT](LICENSE) © Rafa Carrasco. Úsala libremente; se agradece mantener el
+crédito.
+
+**El driver incluido no es mío.** `experience-button-scenario.c4z` es la plantilla
+*Experience Button* de **Control4**, © Wirepath Home Systems, LLC, con su propio copyright
+dentro del paquete. Se distribuye a los integradores precisamente para personalizarla, que
+es lo que hace esta herramienta, pero **el MIT de arriba no la cubre**: sus condiciones
+las pone Control4.
+
+Lo mismo vale para lo que salga de aquí: el `.c4z` que genera la herramienta sigue siendo
+el driver de Control4 con otros iconos.
+
+[JSZip](https://stuk.github.io/jszip/), en `vendor/`, es de sus autores bajo MIT.
